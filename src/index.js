@@ -60,7 +60,6 @@ class Gatling extends Creature{
 
     attack(gameContext, continuation){
         const taskQueue = new TaskQueue();
-        const {currentPlayer, oppositePlayer, position, updateView} = gameContext;
         for (let oppositeCard of gameContext.oppositePlayer.table){
             taskQueue.push(onDone => this.view.showAttack(onDone));
             taskQueue.push(onDone => {
@@ -121,6 +120,30 @@ class Lad extends Dog {
     }
 }
 
+class Rogue extends Creature{
+    constructor() {
+        super("Изгой", 2);
+    }
+
+    doBeforeAttack(gameContext, continuation){
+        const {currentPlayer, oppositePlayer, position, updateView} = gameContext;
+        const oppositePrototype = Object.getPrototypeOf(oppositePlayer.table[position]);
+        if (oppositePrototype.modifyDealedDamageToCreature) {
+            this.modifyDealedDamageToCreature = oppositePrototype.modifyDealedDamageToCreature;
+            delete oppositePrototype.modifyDealedDamageToCreature;
+        }
+        if (oppositePrototype.modifyDealedDamageToPlayer) {
+            this.modifyDealedDamageToPlayer = oppositePrototype.modifyDealedDamageToPlayer;
+            delete oppositePrototype.modifyDealedDamageToPlayer;
+        }
+        if (oppositePrototype.modifyTakenDamage) {
+            this.modifyTakenDamage = oppositePrototype.modifyTakenDamage;
+            delete oppositePrototype.modifyTakenDamage;
+        }
+        updateView();
+        super.doBeforeAttack(gameContext, continuation);
+    }
+}
 
 // Отвечает, является ли карта уткой.
 function isDuck(card) {
@@ -186,9 +209,21 @@ const banditStartDeck2 = [
     new Lad(),
 ];
 
+const seriffStartDeck3 = [
+    new Duck(),
+    new Duck(),
+    new Duck(),
+    new Rogue(),
+];
+const banditStartDeck3 = [
+    new Lad(),
+    new Lad(),
+    new Lad(),
+];
+
 
 // Создание игры.
-const game = new Game(seriffStartDeck2, banditStartDeck2);
+const game = new Game(seriffStartDeck3, banditStartDeck3);
 
 // Глобальный объект, позволяющий управлять скоростью всех анимаций.
 SpeedRate.set(1);
