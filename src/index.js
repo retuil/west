@@ -1,14 +1,25 @@
 import Card from './Card.js';
 import Game from './Game.js';
-import TaskQueue from './TaskQueue.js';
 import SpeedRate from './SpeedRate.js';
 
-class Duck extends Card{
-    constructor(name='Мирная утка', maxPower=2, image=null) {
+class Creature extends Card {
+    constructor(...args) {
+        super(...args);
+    }
+
+    getDescriptions() {
+        const creatureDescription = getCreatureDescription(this);
+        const cardDescription = super.getDescriptions();
+        return [creatureDescription, ...cardDescription];
+    }
+}
+
+class Duck extends Creature {
+    constructor(name = 'Мирная утка', maxPower = 2, image = null) {
         super(name, maxPower, image);
     }
 
-    quacks(){
+    quacks() {
         console.log('quack');
     }
 
@@ -17,8 +28,8 @@ class Duck extends Card{
     }
 }
 
-class Dog extends Card{
-    constructor(name='Пес-бандит', maxPower=3, image=null) {
+class Dog extends Creature {
+    constructor(name = 'Пес-бандит', maxPower = 3, image = null) {
         super(name, maxPower, image);
     }
 }
@@ -37,7 +48,7 @@ class Trasher extends Dog{
 }
 
 
-// Отвечает является ли карта уткой.
+// Отвечает, является ли карта уткой.
 function isDuck(card) {
     return card && card.quacks && card.swims;
 }
@@ -60,19 +71,6 @@ function getCreatureDescription(card) {
     }
     return 'Существо';
 }
-
-
-
-// Основа для утки.
-// function Duck() {
-//     this.quacks = function () { console.log('quack') };
-//     this.swims = function () { console.log('float: both;') };
-// }
-
-
-// Основа для собаки.
-// function Dog() {
-// }
 
 
 // Колода Шерифа, нижнего игрока.
