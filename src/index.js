@@ -46,6 +46,11 @@ class Trasher extends Dog{
         });
 
     }
+
+    getDescriptions() {
+        const trasherDescription = 'Получает на 1 урона меньше от вражеских атак';
+        return [trasherDescription, ...super.getDescriptions()];
+    }
 }
 
 class Gatling extends Creature{
@@ -73,13 +78,10 @@ class Gatling extends Creature{
         }
     }
 
-    // modifyDealedDamageToCreature(value, toCard, gameContext, continuation){
-    //     super.modifyDealedDamageToCreature(2, gameContext, continuation);
-    // }
-    //
-    // modifyDealedDamageToPlayer(value, gameContext, continuation){
-    //     super.modifyDealedDamageToPlayer(0, gameContext, continuation);
-    // }
+    getDescriptions() {
+        const gatlingDescription = 'Наносит 2 урона всем врагам на поле';
+        return [gatlingDescription, ...super.getDescriptions()];
+    }
 }
 
 
