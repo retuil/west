@@ -29,7 +29,7 @@ function isDuck(card) {
     return card && card.quacks && card.swims;
 }
 
-// Отвечает является ли карта собакой.
+// Отвечает, является ли карта собакой.
 function isDog(card) {
     return card instanceof Dog;
 }
